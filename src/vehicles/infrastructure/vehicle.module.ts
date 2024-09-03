@@ -1,0 +1,25 @@
+import { Module } from "@nestjs/common";
+import { MongooseModule } from '@nestjs/mongoose';
+import { CreateVehicleController } from "./http-api/create-vehicle/create-vehicle.controller";
+import { CreateVehicleUseCase } from "../application/create-vehicle-use-case/create-vehicle";
+import { MongoVehicleRepository } from "./repositories/MongoVehicleRepository";
+import { VehicleSchema, Vehicle } from "./schema/vehicle.schema";
+import { VehicleRepository } from "../domain/vehicle.repository";
+import { findVehicleByPlateController } from "./find-vehicle-by-plate/find-vehicle-by-plate.controller";
+import { findVehicleByPlateUseCase } from "../application/find-Vehicle-by-plate/find-vehicle-by-plate.use-case";
+
+@Module({
+    imports:[MongooseModule.forFeature([{ name: Vehicle.name, schema: VehicleSchema }])],
+    controllers:[CreateVehicleController, findVehicleByPlateController],
+    providers:[ CreateVehicleUseCase, MongoVehicleRepository, findVehicleByPlateUseCase, CreateVehicleUseCase,
+        {
+            provide: VehicleRepository,
+            useExisting: MongoVehicleRepository
+        }
+    ],
+    exports: [ CreateVehicleUseCase, findVehicleByPlateUseCase]
+
+})
+export class VehicleModule {
+
+}
