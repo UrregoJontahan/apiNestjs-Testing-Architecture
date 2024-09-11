@@ -7,7 +7,7 @@ import { PrimitiveVehicle } from "src/vehicles/domain/vehicle";
 export class findVehicleByPlateController {
     constructor(private readonly findVehicleByPlateUseCase: findVehicleByPlateUseCase) {}
 
-    @Get("/vehicles")
+    @Get("/")
     async findAll() {
         return this.findVehicleByPlateUseCase.findAll();
     }
