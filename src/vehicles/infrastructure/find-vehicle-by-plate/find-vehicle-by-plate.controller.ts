@@ -2,13 +2,11 @@ import { Controller, Get, Param } from "@nestjs/common";
 import { findVehicleByPlateUseCase } from "src/vehicles/application/find-Vehicle-by-plate/find-vehicle-by-plate.use-case";
 import { findVehicleByPlateHttpDto } from "./find-vehicle-by-plate.http.dto";
 import { PrimitiveVehicle } from "src/vehicles/domain/vehicle";
-import { SQSService } from "src/sqs.services";
 
 @Controller()
 export class findVehicleByPlateController {
     constructor(
         private readonly findVehicleByPlateUseCase: findVehicleByPlateUseCase,
-        private sqsService : SQSService
     ) {}
 
     @Get("/")
