@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common';
 import { VehicleModule } from './vehicles/infrastructure/vehicle.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { SQSService } from './sqs.services';
+import { AppController } from './app.controller';
 
 @Module({
-  imports:[VehicleModule,  MongooseModule.forRoot('mongodb://3.23.79.145:27017/Api-Carts')]
-  //127.0.0.1:27017 uri de conexion local mongodb://127.0.0.1:27017/Api-Carts || mongodb://mongo:27017/Api-Carts mongodb://host.docker.internal:27017/Api-Carts
+  imports:[VehicleModule,  MongooseModule.forRoot('mongodb://3.23.79.145:27017/Api-Carts')],
+  providers:[SQSService],
+  controllers: [AppController],
+  exports:[SQSService],
 })
 export class AppModule {}
     
