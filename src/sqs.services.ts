@@ -8,7 +8,7 @@ export class SQSService {
 
   constructor() {
     this.sqsClient = new SQSClient({
-      region: 'sa-east-1',
+      region: 'us-east-1',
     });
   }
 
