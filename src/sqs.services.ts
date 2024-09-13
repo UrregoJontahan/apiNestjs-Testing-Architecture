@@ -12,15 +12,17 @@ export class SQSService {
     });
   }
 
-  async sendMessage(messageBody: string): Promise<void> {
-    const command = new SendMessageCommand({
-      QueueUrl: this.queueUrl,
-      MessageBody: messageBody,
-    });
+  async sendMessage(messageBody: string) {
 
     try {
-      await this.sqsClient.send(command);
-      console.log('Message sent successfully.');
+      const command = new SendMessageCommand({
+        QueueUrl: this.queueUrl,
+        MessageBody: messageBody,
+      });
+
+      const response = await this.sqsClient.send(command);
+      console.log('Message sent successfully.', response);
+      return response
     } catch (error) {
       console.error('Error sending message:', error);
     }
