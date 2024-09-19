@@ -4,7 +4,7 @@ import { SQSClient, SendMessageCommand } from '@aws-sdk/client-sqs';
 @Injectable()
 export class SQSService {
   private sqsClient: SQSClient;
-  private queueUrl: string = 'https://sqs.us-east-2.amazonaws.com/376129868845/test-queue';
+  private queueUrl: string = 'https://sqs.us-east-1.amazonaws.com/376129868845/my-queue-app';
 
   constructor() {
     this.sqsClient = new SQSClient({
