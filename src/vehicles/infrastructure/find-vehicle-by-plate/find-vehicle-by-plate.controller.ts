@@ -2,11 +2,13 @@ import { Controller, Get, Param } from "@nestjs/common";
 import { findVehicleByPlateUseCase } from "src/vehicles/application/find-Vehicle-by-plate/find-vehicle-by-plate.use-case";
 import { findVehicleByPlateHttpDto } from "./find-vehicle-by-plate.http.dto";
 import { PrimitiveVehicle } from "src/vehicles/domain/vehicle";
+import { SQSService } from "src/sqs.services";
 
 @Controller()
 export class findVehicleByPlateController {
     constructor(
         private readonly findVehicleByPlateUseCase: findVehicleByPlateUseCase,
+        private sqsService: SQSService
     ) {}
 
     @Get("/")
@@ -15,9 +17,18 @@ export class findVehicleByPlateController {
     }
 
     @Get("/vehicles/:plate")
-    async run(@Param() params: findVehicleByPlateHttpDto): Promise<{vehicle: PrimitiveVehicle}> {
-         return await this.findVehicleByPlateUseCase.execute({
+    async find(@Param() params: findVehicleByPlateHttpDto): Promise<{vehicle: PrimitiveVehicle}> {
+         const vehicle = await this.findVehicleByPlateUseCase.execute({
             plate: params.plate
+         });
+
+         const messageBody = JSON.stringify({
+            action: "find by plate",
+            vehicle
          })
+
+         await this.sqsService.sendMessage(messageBody)
+
+         return vehicle
     }
-} 
+}

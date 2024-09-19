@@ -12,7 +12,7 @@ export class CreateVehicleController {
     ) {}
 
     @Post()
-    async run(
+    async create(
         @Body() createVehicleHttpDto: CreateVehicleHttpDto
     ): Promise<{ vehicle: PrimitiveVehicle }> {
         const vehicle = await this.createVehicleUseCase.execute({
@@ -24,9 +24,12 @@ export class CreateVehicleController {
             color: createVehicleHttpDto.color,
         });
 
-        const messageBody = JSON.stringify(vehicle)
+        const messageBody = JSON.stringify({
+            action : "create",
+            vehicle 
+        })
         await this.sqsService.sendMessage(messageBody)
 
         return vehicle 
     }
-}
+} 
