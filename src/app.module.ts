@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { SQSService } from './sqs.services';
 
 @Module({
-  imports:[VehicleModule,  MongooseModule.forRoot('mongodb://13.59.93.212:27017/Api-Carts')],
+  imports:[VehicleModule,  MongooseModule.forRoot('mongodb://18.118.85.71:27017/Api-Carts')],
   providers:[SQSService],
   exports:[SQSService],
 })
