@@ -18,6 +18,7 @@ export class findVehicleByPlateUseCase{
         const cacheVehicle = await this.cache.get(cacheKey)
 
         if(cacheVehicle){
+            console.log("se obtuvo desde la cache")
             return {
                 vehicle: cacheVehicle
             }
@@ -30,6 +31,9 @@ export class findVehicleByPlateUseCase{
         }
 
         await this.cache.set(cacheKey, vehicle.toValue())
+
+
+        console.log("se almaceno en cache")
         
         return {
             vehicle: vehicle.toValue()
