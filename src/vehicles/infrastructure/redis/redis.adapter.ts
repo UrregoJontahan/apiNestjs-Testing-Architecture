@@ -1,13 +1,13 @@
-import * as redis from 'redis';
+import { createClient, RedisClientType } from 'redis';
 import { RedisPort } from './redis.port.dto';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class RedisAdapter implements RedisPort {
-  private client;
+  private client: RedisClientType;
 
   constructor() {
-    this.client = redis.createClient({
+    this.client = createClient({
       socket: {
         host: '3.142.221.120',
         port: 6379,
@@ -15,31 +15,30 @@ export class RedisAdapter implements RedisPort {
     });
 
     this.client.on('error', (err) => {
-      console.log('Redis error', err);
+      console.error('Redis error', err);
     });
 
-    this.client.connect().catch(console.error);
+    this.client.connect().catch((err) => {
+      console.error('Redis connection error:', err);
+    });
   }
 
   async get(key: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.client.get(key, (err, data) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(data ? JSON.parse(data) : null);
-      });
-    });
+    try {
+      const data = await this.client.get(key);
+      return data ? JSON.parse(data) : null;
+    } catch (err) {
+      console.error('Error getting key from Redis:', err);
+      throw err;
+    }
   }
 
   async set(key: string, value: any): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.client.set(key, JSON.stringify(value), (err) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
-      });
-    });
+    try {
+      await this.client.set(key, JSON.stringify(value));
+    } catch (err) {
+      console.error('Error setting key in Redis:', err);
+      throw err;
+    }
   }
 }
