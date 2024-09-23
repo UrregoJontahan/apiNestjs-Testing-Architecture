@@ -7,6 +7,7 @@ export class RedisAdapter implements RedisPort {
   private client: RedisClientType;
 
   constructor() {
+  
     this.client = createClient({
       socket: {
         host: '3.142.221.120',
@@ -18,10 +19,12 @@ export class RedisAdapter implements RedisPort {
       console.error('Redis error', err);
     });
 
+
     this.client.connect().catch((err) => {
       console.error('Redis connection error:', err);
     });
   }
+
 
   async get(key: string): Promise<any> {
     try {
@@ -32,6 +35,7 @@ export class RedisAdapter implements RedisPort {
       throw err;
     }
   }
+
 
   async set(key: string, value: any): Promise<void> {
     try {
