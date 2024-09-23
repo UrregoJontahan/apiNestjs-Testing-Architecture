@@ -1,4 +1,4 @@
-import redis from 'redis';
+import * as redis from 'redis';
 import { RedisPort } from './redis.port.dto';
 import { Injectable } from '@nestjs/common';
 
