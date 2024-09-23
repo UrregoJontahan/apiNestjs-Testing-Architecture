@@ -8,6 +8,8 @@ import { VehicleRepository } from "../domain/vehicle.repository";
 import { findVehicleByPlateController } from "./find-vehicle-by-plate/find-vehicle-by-plate.controller";
 import { findVehicleByPlateUseCase } from "../application/find-Vehicle-by-plate/find-vehicle-by-plate.use-case";
 import { SQSService } from "src/sqs.services";
+import { RedisAdapter } from "./redis/redis.adapter";
+import { RedisPort } from "./redis/redis.port.dto";
 
 @Module({
     imports:[MongooseModule.forFeature([{ name: Vehicle.name, schema: VehicleSchema }])],
@@ -16,9 +18,12 @@ import { SQSService } from "src/sqs.services";
         {
             provide: VehicleRepository,
             useExisting: MongoVehicleRepository
+        },{
+            provide: "RedisPort",
+            useClass:RedisAdapter
         }
     ],
-    exports: [ CreateVehicleUseCase, findVehicleByPlateUseCase]
+    exports: [ CreateVehicleUseCase, findVehicleByPlateUseCase, "RedisPort"]
 
 })
-export class VehicleModule {}
+export class VehicleModule {} 
