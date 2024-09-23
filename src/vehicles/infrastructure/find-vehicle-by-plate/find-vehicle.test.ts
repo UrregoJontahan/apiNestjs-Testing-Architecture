@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { findVehicleByPlateController } from './find-vehicle-by-plate.controller';
 import { findVehicleByPlateUseCase } from 'src/vehicles/application/find-Vehicle-by-plate/find-vehicle-by-plate.use-case';
 import { PrimitiveVehicle } from 'src/vehicles/domain/vehicle';
