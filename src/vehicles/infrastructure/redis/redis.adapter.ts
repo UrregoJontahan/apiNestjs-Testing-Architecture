@@ -6,6 +6,8 @@ export class ElasticCacheAdapter {
     private client: RedisClientType;
 
     constructor() {
+        console.log("Iniciando ElasticCacheAdapter");
+
         this.client = createClient({
             url: "redis://redis-cache-paucki.serverless.use2.cache.amazonaws.com:6379",
             socket: {
@@ -14,8 +16,10 @@ export class ElasticCacheAdapter {
 
         });
 
-        this.client.connect().catch(err => {
-            console.error("Error connecting to ElastiCache:", err);
+        this.client.connect().then(() => {
+            console.log("Conectado a ElastiCache");
+        }).catch(err => {
+            console.error("Error al conectar a ElastiCache:", err);
         });
 
         this.client.on("error", (err) => {
