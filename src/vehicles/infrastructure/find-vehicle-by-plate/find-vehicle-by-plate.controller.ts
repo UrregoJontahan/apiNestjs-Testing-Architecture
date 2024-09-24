@@ -11,7 +11,7 @@ export class findVehicleByPlateController {
         private sqsService: SQSService
     ) {}
 
-    @Get("/")
+    @Get("/vehicles")
     async findAll() {
         return this.findVehicleByPlateUseCase.findAll();
     }

@@ -7,7 +7,10 @@ export class ElasticCacheAdapter {
 
     constructor() {
         this.client = createClient({
-            url: "redis://redis-cache-paucki.serverless.use2.cache.amazonaws.com:6379"
+            url: "redis://redis-cache-paucki.serverless.use2.cache.amazonaws.com:6379",
+            socket: {
+                connectTimeout: 10000,
+            },
 
         });
 
