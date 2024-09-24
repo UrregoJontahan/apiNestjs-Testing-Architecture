@@ -18,16 +18,23 @@ export class findVehicleByPlateController {
 
     @Get("/vehicles/:plate")
     async find(@Param() params: findVehicleByPlateHttpDto): Promise<{vehicle: PrimitiveVehicle}> {
-         const vehicle = await this.findVehicleByPlateUseCase.execute({
+         
+        const vehicle = await this.findVehicleByPlateUseCase.execute({
             plate: params.plate
          });
+
+         if (!vehicle) {
+            return { vehicle: null };
+        }
 
          const messageBody = JSON.stringify({
             action: "find by plate",
             vehicle
          })
 
-         await this.sqsService.sendMessage(messageBody)
+         this.sqsService.sendMessage(messageBody).catch((error) => {
+            console.error('Error sending message to SQS:', error);
+        });
 
          return vehicle
     }
