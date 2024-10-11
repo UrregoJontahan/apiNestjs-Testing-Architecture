@@ -7,11 +7,12 @@ import { findVehicleByPlateController } from './find-vehicle-by-plate/find-vehic
 import { findVehicleByPlateUseCase } from '../application/find-Vehicle-by-plate/find-vehicle-by-plate.use-case';
 import { SQSService } from 'src/sqs.services';
 import { ElasticCacheAdapter } from './redis/redis.adapter';
-import { dynamoDbDocumentClient } from './config/dynamodb.config';
 import { DynamoVehicleRepository } from './repositories/Dynamo.repository';
+import { DynamoDBModule } from '../../shared/dynamo.module'; // Importar el módulo de DynamoDB
+import { VehicleRepository } from '../domain/vehicle.repository';
 
 @Module({
-  imports: [ DynamoVehicleRepository],
+  imports: [DynamoDBModule], // Importar el módulo de DynamoDB
   controllers: [CreateVehicleController, findVehicleByPlateController],
   providers: [
     CreateVehicleUseCase,
@@ -23,15 +24,11 @@ import { DynamoVehicleRepository } from './repositories/Dynamo.repository';
       useExisting: ElasticCacheAdapter,
     },
     {
-      provide: 'DYNAMODB_CLIENT', // Proveedor del cliente DynamoDB
-      useValue: dynamoDbDocumentClient,
+      provide: "VehicleRepository",
+      useClass: DynamoVehicleRepository,
     },
   ],
-  exports: [
-    CreateVehicleUseCase,
-    findVehicleByPlateUseCase,
-    'CachePort',
-    'VehicleRepository',
-  ],
+  exports: [CreateVehicleUseCase, findVehicleByPlateUseCase, 'CachePort', "VehicleRepository"],
 })
 export class VehicleModule {}
+

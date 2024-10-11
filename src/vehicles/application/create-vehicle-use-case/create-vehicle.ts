@@ -1,16 +1,19 @@
-import { VehicleRepository } from "src/vehicles/domain/vehicle.repository";
-import { CreateVehicleDto } from "./create-vehicle.dto";
-import { PrimitiveVehicle, Vehicle } from "src/vehicles/domain/vehicle";
-import { injectable } from "src/shared/dependency-injection/injectable";
+import { Inject, Injectable } from '@nestjs/common';
+import { VehicleRepository } from 'src/vehicles/domain/vehicle.repository';
+import { CreateVehicleDto } from './create-vehicle.dto';
+import { PrimitiveVehicle, Vehicle } from 'src/vehicles/domain/vehicle';
 
-@injectable()
+@Injectable() // Cambié el decorador a @Injectable()
 export class CreateVehicleUseCase {
-  constructor(private readonly vehicleRepository: VehicleRepository) {}
+  // Usar @Inject() con el identificador de cadena 'VehicleRepository'
+  constructor(
+    @Inject('VehicleRepository') // Indicar a NestJS que se inyecte 'VehicleRepository' como token
+    private readonly vehicleRepository: VehicleRepository,
+  ) {}
 
   async execute(dto: CreateVehicleDto): Promise<{ vehicle: PrimitiveVehicle }> {
     const vehicle = Vehicle.create(dto);
     await this.vehicleRepository.create(vehicle);
     return { vehicle: vehicle.toValue() };
   }
-
 }
