@@ -7,10 +7,11 @@ import { findVehicleByPlateController } from './find-vehicle-by-plate/find-vehic
 import { findVehicleByPlateUseCase } from '../application/find-Vehicle-by-plate/find-vehicle-by-plate.use-case';
 import { SQSService } from 'src/sqs.services';
 import { ElasticCacheAdapter } from './redis/redis.adapter';
-import { dynamoDbDocumentClient } from './config/dynamodb.config'; // Cliente DynamoDB configurado
+import { dynamoDbDocumentClient } from './config/dynamodb.config';
+import { DynamoVehicleRepository } from './repositories/Dynamo.repository';
 
 @Module({
-  imports: [],
+  imports: [ DynamoVehicleRepository],
   controllers: [CreateVehicleController, findVehicleByPlateController],
   providers: [
     CreateVehicleUseCase,

@@ -5,7 +5,7 @@ import { DynamoVehicleRepository } from './vehicles/infrastructure/repositories/
 
 @Module({
   imports:[VehicleModule],
-  providers:[SQSService, DynamoVehicleRepository],
+  providers:[SQSService,],
   exports:[SQSService],
 })
 export class AppModule {}
