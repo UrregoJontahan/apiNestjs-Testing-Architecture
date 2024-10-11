@@ -42,7 +42,7 @@ export class ElasticCacheAdapter {
 
     async set(key: string, value: any): Promise<void> {
         try {
-            await this.client.set(key, JSON.stringify(value), { EX: 20 * 60 * 60 });
+            await this.client.set(key, JSON.stringify(value), { EX: 20 * 60 * 1000 });
         } catch (err) {
             console.error("Error guardando valor en Redis:", err);
             throw err;
