@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-WORKDIR /hexagonal-architecture
+WORKDIR /hexagonal-architecture/hexagonal-architecture
 
 COPY package*.json ./
 
