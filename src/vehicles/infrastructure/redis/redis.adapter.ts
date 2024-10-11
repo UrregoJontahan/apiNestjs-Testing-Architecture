@@ -8,22 +8,25 @@ export class ElasticCacheAdapter {
     constructor() {
         console.log("Iniciando ElasticCacheAdapter");
 
+        // Obtener la URL de conexión desde las variables de entorno
+        const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
+
         this.client = createClient({
-            url: "redis://redis-cache-paucki.serverless.use2.cache.amazonaws.com:6379",
+            url: redisUrl,
             socket: {
                 connectTimeout: 10000,
             },
-
         });
 
+        // Conectar a Redis
         this.client.connect().then(() => {
-            console.log("Conectado a ElastiCache");
+            console.log(`Conectado a Redis en: ${redisUrl}`);
         }).catch(err => {
-            console.error("Error al conectar a ElastiCache:", err);
+            console.error("Error al conectar a Redis:", err);
         });
 
         this.client.on("error", (err) => {
-            console.error("ElastiCache error:", err);
+            console.error("Redis error:", err);
         });
     }
 
@@ -32,16 +35,16 @@ export class ElasticCacheAdapter {
             const data = await this.client.get(key);
             return data ? JSON.parse(data) : null;
         } catch (err) {
-            console.error("Error getting value from ElastiCache:", err);
+            console.error("Error obteniendo valor de Redis:", err);
             throw err;
         }
     }
 
     async set(key: string, value: any): Promise<void> {
         try {
-            await this.client.set(key, JSON.stringify(value));
+            await this.client.set(key, JSON.stringify(value), { EX: 20 * 60 * 60 });
         } catch (err) {
-            console.error("Error setting value in ElastiCache:", err);
+            console.error("Error guardando valor en Redis:", err);
             throw err;
         }
     }
