@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-WORKDIR /hexagonal-architecture/hexagonal-architecture
+WORKDIR /hexagonal-architecture
 
 COPY package*.json ./
 
@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
+# Asegúrate de que el archivo main.js esté en la ruta correcta
 EXPOSE 4002
 
-CMD [ "npm", "run" , "start:prod" ]
-
+CMD ["node", "dist/main.js"]
