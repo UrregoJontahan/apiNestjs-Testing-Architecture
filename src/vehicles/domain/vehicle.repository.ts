@@ -1,10 +1,11 @@
-import { Vehicle } from "./vehicle";
+// src/vehicles/domain/vehicle.repository.ts
 
-export abstract class VehicleRepository{
+import { Vehicle } from './vehicle';
 
-    abstract create(vehicle: Vehicle): Promise<void>
-    abstract getByPlate(plate: string) : Promise<Vehicle | null>
-    abstract findAll(): Promise<Vehicle[]>;
-}     
-
-
+export interface VehicleRepository {
+  create(vehicle: Vehicle): Promise<void>;
+  findById(vehicleId: string): Promise<Vehicle | null>; 
+  findAll(): Promise<Vehicle[]>;                      
+  delete(vehicleId: string): Promise<void>;           
+  getByPlate(plate: string): Promise<Vehicle | null>; 
+}
