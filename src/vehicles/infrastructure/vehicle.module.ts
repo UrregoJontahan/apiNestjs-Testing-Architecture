@@ -5,8 +5,8 @@ import { CreateVehicleController } from './http-api/create-vehicle/create-vehicl
 import { CreateVehicleUseCase } from '../application/create-vehicle-use-case/create-vehicle';
 import { findVehicleByPlateController } from './find-vehicle-by-plate/find-vehicle-by-plate.controller';
 import { findVehicleByPlateUseCase } from '../application/find-Vehicle-by-plate/find-vehicle-by-plate.use-case';
-// import { SQSService } from 'src/sqs.services';
-// import { ElasticCacheAdapter } from './redis/redis.adapter';
+import { SQSService } from 'src/sqs.services';
+import { ElasticCacheAdapter } from './redis/redis.adapter';
 import { DynamoVehicleRepository } from './repositories/Dynamo.repository';
 import { DynamoDBModule } from '../../shared/dynamo.module'; // Importar el módulo de DynamoDB
 import { VehicleRepository } from '../domain/vehicle.repository';
@@ -17,12 +17,12 @@ import { VehicleRepository } from '../domain/vehicle.repository';
   providers: [
     CreateVehicleUseCase,
     findVehicleByPlateUseCase,
-    // SQSService,
-    // ElasticCacheAdapter,
-    // {
-    // //   provide: 'CachePort',
-    // //   useExisting: ElasticCacheAdapter,
-    // },
+    SQSService,
+    ElasticCacheAdapter,
+    {
+      provide: 'CachePort',
+      useExisting: ElasticCacheAdapter,
+    },
     {
       provide: "VehicleRepository",
       useClass: DynamoVehicleRepository,
